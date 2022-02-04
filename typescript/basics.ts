@@ -271,7 +271,7 @@ class game {
             this._ball._ball_radius + this.paddle_left.paddle_width
         ) {
             if (
-                this._ball.ball_y > this.paddle_left._paddle_y &&
+                 this._ball.ball_y > this.paddle_left._paddle_y &&
                 this._ball.ball_y < this.paddle_left._paddle_y + this.paddle_left._paddle_height+8
             ) {
                 this._ball._velocity_x = -this._ball._velocity_x;
