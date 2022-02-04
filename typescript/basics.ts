@@ -166,13 +166,9 @@ class game {
         this.uppress1 = false;
         this.downpress1 = false;
         this.paddle_left = new player(0, 10, this.canvas.height / 2, 10, 80, 1, this.ctx, "white");
-
         this.paddle_right = new player(0, this.canvas.width - 20, (this.canvas.height) / 2, 10, 80, 1, this.ctx, "white");
         this.center_rec = new player(0, this.canvas.width / 2, 0, 1, this.canvas.height, 0, this.ctx, "white");
-
-        this._ball = new ball(this.ctx, this.canvas.width / 2, this.canvas.height / 2, 11, 2, -2, "white");
-        // this._ball.ball_x= this._ball._ball_x;
-        // this._ball.ball_y = this._ball._ball_y;
+        this._ball = new ball(this.ctx, this.canvas.width / 2, this.canvas.height / 2, 8, 2, -2, "red");
         document.addEventListener("keyup", this.keyUpHandler.bind(this), false);
         document.addEventListener("keydown", this.keyDownHandler.bind(this), false);
         this.start();
@@ -212,30 +208,30 @@ class game {
 
 
     keyhook() {
-      
+
         if (this.uppress === true) {
 
-            this.paddle_left.paddle_y-= 2;
+            this.paddle_left.paddle_y -= 4;
             if (this.paddle_left.paddle_y < 0) {
                 this.paddle_left.paddle_y = 0;
             }
         }
         if (this.uppress1) {
-            this.paddle_right.paddle_y -=2;
+            this.paddle_right.paddle_y -= 4;
             if (this.paddle_right._paddle_y < 0) {
                 this.paddle_right.paddle_y = 0;
             }
         }
         if (this.downpress) {
-            this.paddle_left.paddle_y+=4;
-            if (this.paddle_left.paddle_y + this.paddle_left._paddle_height < 0) {
-                this.paddle_left.paddle_y =  this.canvas.height - this.paddle_left._paddle_height;
+            this.paddle_left.paddle_y += 4;
+            if (this.paddle_left.paddle_y + this.paddle_left._paddle_height > this.canvas.height) {
+                this.paddle_left.paddle_y = this.canvas.height - this.paddle_left._paddle_height;
             }
         }
         if (this.downpress1) {
-            this.paddle_right.paddle_y++;
-            if (this.paddle_right._paddle_y + this.paddle_right._paddle_height < 0) {
-                this.paddle_left.paddle_y =  this.canvas.height - this.paddle_right._paddle_height;
+            this.paddle_right.paddle_y += 4;
+            if (this.paddle_right._paddle_y + this.paddle_right._paddle_height > this.canvas.height) {
+                this.paddle_right.paddle_y = this.canvas.height - this.paddle_right._paddle_height;
 
                 // this.paddle_right._Paddle_y();
             }
@@ -243,63 +239,54 @@ class game {
     }
 
     collisionDetection() {
-
         if (this._ball.ball_y + this._ball._velocity_y < this._ball._ball_radius) {
-            this._ball._velocity_y = -this._ball._velocity_y;
+            this._ball._velocity_y *= -1;
         } else if (
             this._ball.ball_y + this._ball._velocity_y >
             this.canvas.height - this._ball._ball_radius
         ) {
             //ball hits the bottom
-            this._ball._velocity_y = -this._ball._velocity_y;
+            this._ball._velocity_y *= -1;
         }
 
         // ball hits rihgt paddle
-        if (
-            this._ball.ball_x+ this._ball._velocity_y >
-            this.canvas.width - this._ball._ball_radius - this.paddle_right._paddle_height
-        ) {
+        if (this._ball.ball_x + this._ball._velocity_x + 5 > this.canvas.width - this._ball._ball_radius - this.paddle_right.paddle_width) {
             if (
                 this._ball.ball_y > this.paddle_right._paddle_y &&
-                this._ball.ball_y < this.paddle_right._paddle_y + this.paddle_right._paddle_height
+                this._ball.ball_y < this.paddle_right._paddle_y + this.paddle_right._paddle_height +8
             ) {
-                this._ball._velocity_y = -this._ball._velocity_y;
-            } else {
+                this._ball._velocity_x = -this._ball._velocity_x;
+            } else if (this._ball.ball_x + this._ball._velocity_x < this.canvas.width - this._ball.ball_radius) {
                 // this.paddle_right._score(1);
-                this._ball.ball_x= this.canvas.width / 2;
+                this._ball.ball_x = this.canvas.width / 2;
                 this._ball.ball_y = this.canvas.height - this.paddle_right._paddle_height;
-                this._ball._velocity_y = 1;
-                this._ball._velocity_y = -1;
-                // this.paddle_left._Paddle_y((
-                //     this.canvas.height - this.paddle_right._paddle_height
-                // ) / 2);
-                // this.paddle_right._Paddle_y((
-                //     this.canvas.height - this.paddle_right._paddle_height
-                // ) / 2);
+                this._ball._velocity_x = 2;
+                this._ball._velocity_y = -2;
+                this.paddle_left.paddle_y = ((this.canvas.height - this.paddle_left._paddle_height) / 2);
+                this.paddle_right.paddle_y = ((this.canvas.height - this.paddle_right._paddle_height) / 2);
             }
         }
-        // balls hits left paddle
         if (
-            this._ball.ball_x+ this._ball._velocity_y <
-            this._ball._ball_radius + this.paddle_right._paddle_height
+            this._ball.ball_x + this._ball._velocity_x - 5 <
+            this._ball._ball_radius + this.paddle_left.paddle_width
         ) {
             if (
-                this._ball.ball_y > this.paddle_right._paddle_y &&
-                this._ball.ball_y < this.paddle_right._paddle_y + this.paddle_right._paddle_height
+                this._ball.ball_y > this.paddle_left._paddle_y &&
+                this._ball.ball_y < this.paddle_left._paddle_y + this.paddle_left._paddle_height+8
             ) {
-                this._ball._velocity_y = -this._ball._velocity_y;
-            } else {
+                this._ball._velocity_x = -this._ball._velocity_x;
+            } else if (this._ball.ball_x + this._ball._velocity_x < 10 - this._ball.ball_radius) {
                 // this.paddle_left._score(1);
-                this._ball.ball_x= this.canvas.width / 2;
+                this._ball.ball_x = this.canvas.width / 2;
                 this._ball.ball_y = this.canvas.height - this.paddle_right._paddle_height;
-                this._ball._velocity_y = 2;
+                this._ball._velocity_y = -2;
                 this._ball._velocity_x = -2;
-                this.paddle_left.paddle_x = ((this.canvas.height - this.paddle_left._paddle_height) / 2);
-                this.paddle_right.paddle_x=((this.canvas.height - this.paddle_right._paddle_height) / 2);
+                this.paddle_left.paddle_y = ((this.canvas.height - this.paddle_left._paddle_height) / 2);
+                this.paddle_right.paddle_y = ((this.canvas.height - this.paddle_right._paddle_height) / 2);
             }
         }
     }
-    
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -308,18 +295,18 @@ class game {
         this._ball.draw_ball();
         this.center_rec.draw_padle();
     }
-    
-    
+
+
     start() {
         this.keyhook();
         this.draw();
         // setInterval(() => {
-            this._ball.ball_x += this._ball._velocity_x;
-            this._ball.ball_y += this._ball._velocity_y;
-            this.collisionDetection();
-            
-            requestAnimationFrame(() => this.start());
- 
+        this._ball.ball_x += this._ball._velocity_x;
+        this._ball.ball_y += this._ball._velocity_y;
+        this.collisionDetection();
+
+        requestAnimationFrame(() => this.start());
+
         // }, 1);
     }
 }
