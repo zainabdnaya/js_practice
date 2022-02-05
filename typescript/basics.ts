@@ -300,14 +300,11 @@ class game {
     start() {
         this.keyhook();
         this.draw();
-        // setInterval(() => {
         this._ball.ball_x += this._ball._velocity_x;
         this._ball.ball_y += this._ball._velocity_y;
         this.collisionDetection();
-
         requestAnimationFrame(() => this.start());
 
-        // }, 1);
     }
 }
 
