@@ -21,13 +21,13 @@ RUN npm install -g typescript
 
 # install nestjs
 
-# RUN n stable
+RUN n stable
 
-# RUN npm install -g nestjs
+RUN npm install -g nestjs
 
-# RUN npm i -g @nestjs/cli
+RUN npm i -g @nestjs/cli
 
-# clone project
+#clone project
 
 
 RUN apt install git
@@ -35,7 +35,9 @@ RUN apt install git
 RUN git clone https://github.com/zainabdnaya/js_practice.git  /js_practice
 
 
-WORKDIR  /js_practice/typescript
+WORKDIR  /js_practice
+
+# RUN npm install
 
 RUN apt install zsh -y
 
