@@ -1,0 +1,6 @@
+GET http://localhost:3000/companies
+
+
+# POST http://localhost:3000/companies
+#  Content-Type: application/json
+  
