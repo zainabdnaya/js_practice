@@ -1,2 +1,2 @@
 # js_practice
-This journey aim to learn JS 
+This journey goal to learn JS 
